@@ -1,4 +1,4 @@
-package com.emirhan.plugins
+package com.emirhan.model
 
 import kotlinx.serialization.Serializable
 

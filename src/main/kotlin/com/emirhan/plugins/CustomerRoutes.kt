@@ -1,5 +1,6 @@
 package com.emirhan.plugins
 
+import com.emirhan.model.Customer
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
