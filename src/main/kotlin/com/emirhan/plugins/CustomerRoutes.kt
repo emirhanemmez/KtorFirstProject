@@ -1,5 +1,6 @@
 package com.emirhan.plugins
 
+import com.emirhan.database.UserTable
 import com.emirhan.model.Customer
 import io.ktor.application.*
 import io.ktor.http.*
@@ -23,12 +24,9 @@ fun Route.customerRouting() {
         }
         get("/customer/{id}") {
             val id = call.parameters["id"]
-            val customer = customerList.find { it.id == id }
-            if (customer != null) {
-                call.respond(customer)
-            } else {
-                call.respondText(status = HttpStatusCode.NotFound, text = "Not found customer")
-            }
+            // val customer = customerList.find { it.id == id }
+            val user = UserTable.getUserById(id?.toInt()!!)
+            call.respond(user)
 
         }
         post {
