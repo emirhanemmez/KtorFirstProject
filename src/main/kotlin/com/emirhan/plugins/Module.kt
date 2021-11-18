@@ -22,9 +22,9 @@ fun Application.module() {
      */
 
     Database.connect(
-        url = "jdbc:postgresql://0.0.0.0:5433/postgres",
+        url = "jdbc:postgresql://ec2-99-81-177-233.eu-west-1.compute.amazonaws.com:5432/da5qc3vrrl1rp7",
         driver = "org.postgresql.Driver",
-        user = "emirhanemmez",
-        password = "emmez1453"
+        user = "ytkhaljqplgtns",
+        password = "67033d4a658b9ad6865164972319712a0290fb11253556be9733d424c23d1f76"
     )
 }
