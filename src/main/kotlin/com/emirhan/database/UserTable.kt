@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.SQLException
 
-object UserTable: Table() {
+object UserTable: Table("user") {
     private val id = integer("id").autoIncrement()
     private val username = varchar("username", 20)
     private val password = varchar("password", 20)

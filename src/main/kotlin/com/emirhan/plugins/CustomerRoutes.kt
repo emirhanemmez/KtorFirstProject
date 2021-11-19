@@ -22,7 +22,7 @@ fun Route.customerRouting() {
                 call.respond(customerList)
             }
         }
-        get("/customer/{id}") {
+        get("/{id}") {
             val id = call.parameters["id"]
             // val customer = customerList.find { it.id == id }
             val user = UserTable.getUserById(id?.toInt()!!)
