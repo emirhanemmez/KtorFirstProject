@@ -8,7 +8,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Route.customerRouting() {
+fun Route.userRouting() {
     route("/user") {
         get {
             val userList = UserTable.getAllUsers()
