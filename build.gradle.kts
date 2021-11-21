@@ -37,4 +37,6 @@ dependencies {
     runtimeOnly("org.jetbrains.exposed:exposed-jdbc:$exposed_sql_version")
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_sql_version")
     implementation("org.postgresql:postgresql:42.3.1")
+
+    implementation("org.mindrot:jbcrypt:0.4")
 }

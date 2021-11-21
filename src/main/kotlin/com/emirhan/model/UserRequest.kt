@@ -1,9 +1,12 @@
 package com.emirhan.model
 
 import kotlinx.serialization.Serializable
+import org.mindrot.jbcrypt.BCrypt
 
 @Serializable
 data class UserRequest(
     val username: String,
-    val password: String
-)
+    var password: String
+) {
+    fun hashedPassword(): String = BCrypt.hashpw(password, BCrypt.gensalt())
+}

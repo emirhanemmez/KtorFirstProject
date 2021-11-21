@@ -9,15 +9,15 @@ import java.sql.SQLException
 object UserTable : Table("user") {
     private val id = integer("id").autoIncrement()
     private val username = varchar("username", 20)
-    private val password = varchar("password", 20)
+    private val password = text("password")
 
     override val primaryKey = PrimaryKey(id)
 
     fun addUser(user: UserRequest) = transaction {
         try {
             UserTable.insert {
-                it[username] = user.username
-                it[password] = user.password
+                it[username] = user.username!!
+                it[password] = user.password!!
             }
         } catch (e: SQLException) {
             println(e.message)
@@ -44,6 +44,22 @@ object UserTable : Table("user") {
             try {
                 UserTable.select {
                     UserTable.id eq id
+                }.map {
+                    user = it.toUser()
+                }
+            } catch (e: SQLException) {
+                println(e.message)
+            }
+        }
+        return user
+    }
+
+    fun getUserByUsername(username: String): User? {
+        var user: User? = null
+        transaction {
+            try {
+                UserTable.select {
+                    UserTable.username eq username
                 }.map {
                     user = it.toUser()
                 }

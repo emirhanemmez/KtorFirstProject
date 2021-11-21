@@ -3,10 +3,13 @@ package com.emirhan.plugins
 import com.emirhan.database.UserTable
 import com.emirhan.model.UserRequest
 import io.ktor.application.*
+import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import org.mindrot.jbcrypt.BCrypt
+import javax.security.sasl.AuthenticationException
 
 fun Route.userRouting() {
     route("/user") {
@@ -31,8 +34,9 @@ fun Route.userRouting() {
         put {
             val user = call.receiveOrNull<UserRequest>()
             user?.let {
+                user.password = user.hashedPassword()
                 UserTable.addUser(user)
-                call.respondText("User saved successfully", status = HttpStatusCode.OK)
+                call.respondText("User saved successfully", status = HttpStatusCode.Created)
             }
         }
         delete("/{id}") {
@@ -40,6 +44,18 @@ fun Route.userRouting() {
             id?.let {
                 UserTable.deleteUser(it)
                 call.respondText("User deleted", status = HttpStatusCode.OK)
+            }
+        }
+    }
+    route("/login") {
+        post {
+            val userRequest = call.receive<UserRequest>()
+            val user = UserTable.getUserByUsername(userRequest.username) ?: throw NotFoundException()
+            val doesPasswordMatch = BCrypt.checkpw(userRequest.password, user.password)
+            if (doesPasswordMatch) {
+                call.respond(status = HttpStatusCode.OK, message = "Success")
+            } else {
+                call.respondText("Auth Error", status = HttpStatusCode.Unauthorized)
             }
         }
     }
