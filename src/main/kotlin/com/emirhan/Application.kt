@@ -39,10 +39,10 @@ fun main() {
             configureRouting()
 
             Database.connect(
-                url = "jdbc:postgresql://$dbHost:$dbPort/postgres",
-                driver = "org.postgresql.Driver",
-                user = dbUser,
-                password = dbPassword
+                    url = "jdbc:postgresql://$dbHost:$dbPort/postgres",
+                    driver = "org.postgresql.Driver",
+                    user = dbUser,
+                    password = dbPassword
             )
             transaction {
                 addLogger(StdOutSqlLogger)

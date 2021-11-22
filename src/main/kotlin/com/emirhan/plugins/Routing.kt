@@ -1,7 +1,7 @@
 package com.emirhan.plugins
 
-import io.ktor.routing.*
-import io.ktor.application.*
+import io.ktor.application.Application
+import io.ktor.routing.routing
 
 fun Application.configureRouting() {
 

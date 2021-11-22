@@ -2,7 +2,12 @@ package com.emirhan.database
 
 import com.emirhan.model.User
 import com.emirhan.model.UserRequest
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.SQLException
 
@@ -16,8 +21,8 @@ object UserTable : Table("user") {
     fun addUser(user: UserRequest) = transaction {
         try {
             UserTable.insert {
-                it[username] = user.username!!
-                it[password] = user.password!!
+                it[username] = user.username
+                it[password] = user.password
             }
         } catch (e: SQLException) {
             println(e.message)
@@ -79,8 +84,8 @@ object UserTable : Table("user") {
     }
 
     private fun ResultRow.toUser() = User(
-        id = this[id],
-        username = this[username],
-        password = this[password]
+            id = this[id],
+            username = this[username],
+            password = this[password]
     )
 }

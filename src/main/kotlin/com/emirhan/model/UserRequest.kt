@@ -5,8 +5,8 @@ import org.mindrot.jbcrypt.BCrypt
 
 @Serializable
 data class UserRequest(
-    val username: String,
-    var password: String
+        val username: String,
+        var password: String
 ) {
     fun hashedPassword(): String = BCrypt.hashpw(password, BCrypt.gensalt())
 }
