@@ -1,21 +1,15 @@
 package com.emirhan.plugins
 
-import io.ktor.gson.*
-import io.ktor.features.*
-import io.ktor.application.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.*
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
 
 fun Application.configureSerialization() {
     install(ContentNegotiation) {
         gson {
-        }
-    }
-
-    routing {
-        get("/json/gson") {
-            call.respond(mapOf("hello" to "world"))
+            setPrettyPrinting()
+            disableHtmlEscaping()
         }
     }
 }
