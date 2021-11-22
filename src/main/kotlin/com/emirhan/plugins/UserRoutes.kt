@@ -6,7 +6,7 @@ import com.emirhan.model.error.AuthenticationException
 import com.emirhan.model.error.UserNotFoundException
 import com.emirhan.utils.TokenManager
 import com.typesafe.config.ConfigFactory
-import io.ktor.application.call
+import io.ktor.application.*
 import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.principal
@@ -61,6 +61,10 @@ fun Route.userRouting() {
                     UserTable.deleteUser(it)
                     call.respondText("User deleted", status = HttpStatusCode.OK)
                 }
+            }
+
+            intercept(ApplicationCallPipeline.Features) {
+                println(call.request.headers.entries())
             }
         }
 
