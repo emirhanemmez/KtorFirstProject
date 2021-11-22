@@ -22,8 +22,9 @@ fun main() {
         val dbPassword = config.property("ktor.deployment.db_password").getString()
 
         module {
-            configureRouting()
             module()
+            configureSecurity()
+            configureRouting()
 
             Database.connect(
                 url = "jdbc:postgresql://$dbHost:$dbPort/postgres",
