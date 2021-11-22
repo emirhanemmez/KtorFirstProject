@@ -2,14 +2,12 @@ package com.emirhan.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.emirhan.utils.TokenManager
-import io.ktor.auth.*
-import io.ktor.util.*
-import io.ktor.application.*
-import io.ktor.auth.jwt.*
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.*
+import com.emirhan.model.error.AuthenticationException
+import io.ktor.application.Application
+import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.jwt.JWTPrincipal
+import io.ktor.auth.jwt.jwt
 
 fun Application.configureSecurity() {
     install(Authentication) {
@@ -24,7 +22,7 @@ fun Application.configureSecurity() {
                 if (!credential.payload.getClaim("username").asString().isNullOrEmpty()) {
                     JWTPrincipal(credential.payload)
                 } else {
-                    null
+                    throw AuthenticationException("Authentication failed!")
                 }
             }
         }

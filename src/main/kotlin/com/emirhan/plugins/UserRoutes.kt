@@ -2,6 +2,8 @@ package com.emirhan.plugins
 
 import com.emirhan.database.UserTable
 import com.emirhan.model.UserRequest
+import com.emirhan.model.error.AuthenticationException
+import com.emirhan.model.error.UserNotFoundException
 import com.emirhan.utils.TokenManager
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.call
@@ -75,8 +77,15 @@ fun Route.userRouting() {
             val userRequest = call.receive<UserRequest>()
             val user = UserTable.getUserByUsername(userRequest.username)
 
-            if (user != null)
-                call.respond(hashMapOf("token" to tokenManager.generateJWTToken(user)))
+            if (user != null) {
+                if (user.password == userRequest.hashedPassword())
+                    call.respond(hashMapOf("token" to tokenManager.generateJWTToken(user)))
+                else {
+                    throw AuthenticationException("Wrong username or password!")
+                }
+            } else {
+                throw UserNotFoundException("User not found!")
+            }
         }
     }
 }

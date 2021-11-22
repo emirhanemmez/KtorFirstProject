@@ -1,11 +1,19 @@
 package com.emirhan
 
 import com.emirhan.database.UserTable
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import com.emirhan.plugins.*
+import com.emirhan.plugins.configureRouting
+import com.emirhan.plugins.configureSecurity
+import com.emirhan.plugins.errorHandling
 import com.typesafe.config.ConfigFactory
-import io.ktor.config.*
+import io.ktor.application.install
+import io.ktor.config.HoconApplicationConfig
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
+import io.ktor.serialization.json
+import io.ktor.server.engine.applicationEngineEnvironment
+import io.ktor.server.engine.connector
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
@@ -22,7 +30,11 @@ fun main() {
         val dbPassword = config.property("ktor.deployment.db_password").getString()
 
         module {
-            module()
+            install(ContentNegotiation) {
+                json()
+                gson()
+            }
+            errorHandling()
             configureSecurity()
             configureRouting()
 
