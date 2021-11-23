@@ -6,15 +6,20 @@ import com.emirhan.model.error.AuthenticationException
 import com.emirhan.model.error.UserNotFoundException
 import com.emirhan.utils.TokenManager
 import com.typesafe.config.ConfigFactory
-import io.ktor.application.*
+import io.ktor.application.ApplicationCallPipeline
+import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.principal
 import io.ktor.config.HoconApplicationConfig
+import io.ktor.http.ContentDisposition
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.request.receiveOrNull
+import io.ktor.response.header
 import io.ktor.response.respond
+import io.ktor.response.respondFile
 import io.ktor.response.respondText
 import io.ktor.routing.Route
 import io.ktor.routing.delete
@@ -22,6 +27,7 @@ import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
 import io.ktor.routing.route
+import java.io.File
 
 fun Route.userRouting() {
 
@@ -73,6 +79,38 @@ fun Route.userRouting() {
             val username = principal!!.payload.getClaim("username").asString()
             val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
             call.respondText(text = "Hello, $username ! Token is expired at $expiresAt")
+        }
+    }
+
+    // download file
+    route("/fileDownloadAsAttachment") {
+        get {
+
+            val file = File("files/kedi.jpg")
+            call.response.header(
+                HttpHeaders.ContentDisposition,
+                ContentDisposition.Attachment.withParameter(
+                    ContentDisposition.Parameters.FileName, "downloadedKediImage.jpg"
+                ).toString()
+            )
+
+            call.respondFile(file)
+        }
+    }
+
+    // download file and show in browser
+    route("/fileDownloadAsInline") {
+        get {
+
+            val file = File("files/kedi.jpg")
+            call.response.header(
+                HttpHeaders.ContentDisposition,
+                ContentDisposition.Inline.withParameter(
+                    ContentDisposition.Parameters.FileName, "downloadedKediImage.jpg"
+                ).toString()
+            )
+
+            call.respondFile(file)
         }
     }
 
