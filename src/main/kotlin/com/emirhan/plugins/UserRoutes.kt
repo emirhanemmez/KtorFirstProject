@@ -15,6 +15,7 @@ import io.ktor.config.HoconApplicationConfig
 import io.ktor.http.ContentDisposition
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.*
 import io.ktor.request.receive
 import io.ktor.request.receiveOrNull
 import io.ktor.response.header
@@ -111,6 +112,12 @@ fun Route.userRouting() {
             )
 
             call.respondFile(file)
+        }
+    }
+
+    route("/staticContent") {
+        static {
+            defaultResource("kedi.jpg", "files")
         }
     }
 
