@@ -5,9 +5,9 @@ import com.emirhan.model.UserRequest
 import com.emirhan.model.error.AuthenticationException
 import com.emirhan.model.error.UserNotFoundException
 import com.emirhan.utils.TokenManager
+import com.papsign.ktor.openapigen.openAPIGen
 import com.typesafe.config.ConfigFactory
-import io.ktor.application.ApplicationCallPipeline
-import io.ktor.application.call
+import io.ktor.application.*
 import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.auth.principal
@@ -18,10 +18,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.*
 import io.ktor.request.receive
 import io.ktor.request.receiveOrNull
-import io.ktor.response.header
-import io.ktor.response.respond
-import io.ktor.response.respondFile
-import io.ktor.response.respondText
+import io.ktor.response.*
 import io.ktor.routing.Route
 import io.ktor.routing.delete
 import io.ktor.routing.get

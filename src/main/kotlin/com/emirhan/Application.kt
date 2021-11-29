@@ -1,6 +1,7 @@
 package com.emirhan
 
 import com.emirhan.database.UserTable
+import com.emirhan.plugins.configureOpenApi
 import com.emirhan.plugins.configureRouting
 import com.emirhan.plugins.configureSecurity
 import com.emirhan.plugins.errorHandling
@@ -37,6 +38,7 @@ fun main() {
             errorHandling()
             configureSecurity()
             configureRouting()
+            configureOpenApi()
 
             Database.connect(
                     url = "jdbc:postgresql://$dbHost:$dbPort/postgres",

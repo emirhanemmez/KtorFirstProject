@@ -1,11 +1,19 @@
 package com.emirhan.plugins
 
-import io.ktor.application.Application
-import io.ktor.routing.routing
+import com.papsign.ktor.openapigen.openAPIGen
+import io.ktor.application.*
+import io.ktor.response.*
+import io.ktor.routing.*
 
 fun Application.configureRouting() {
 
     routing {
         userRouting()
+        get("/openapi.json") {
+            call.respond(application.openAPIGen.api.serialize())
+        }
+        get("/") {
+            call.respondRedirect("/swagger-ui/index.html?url=/openapi.json", true)
+        }
     }
 }
