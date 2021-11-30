@@ -5,8 +5,8 @@ val exposed_sql_version: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.6.0"
-    kotlin("plugin.serialization") version "1.6.0"
+    kotlin("jvm") version "1.5.31"
+    kotlin("plugin.serialization") version "1.5.31"
 }
 
 group = "com.emirhan"
@@ -28,7 +28,7 @@ tasks.create("stage") {
 
 dependencies {
     implementation("io.ktor:ktor-server-core:$ktor_version")
-    implementation("io.ktor:ktor-gson:$ktor_version")
+    implementation("io.ktor:ktor-jackson:$ktor_version")
     implementation("io.ktor:ktor-auth:$ktor_version")
     implementation("io.ktor:ktor-auth-jwt:$ktor_version")
     implementation("io.ktor:ktor-serialization:$ktor_version")
@@ -44,5 +44,6 @@ dependencies {
     implementation("org.mindrot:jbcrypt:0.4")
 
     implementation("com.github.papsign:Ktor-OpenAPI-Generator:0.3-beta.2")
-    implementation("io.insert-koin:koin-ktor:3.1.4")
+    implementation("io.insert-koin:koin-ktor:3.1.3")
+    implementation("io.insert-koin:koin-logger-slf4j:3.1.3")
 }

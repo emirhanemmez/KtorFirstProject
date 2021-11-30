@@ -1,15 +1,12 @@
 package com.emirhan
 
 import com.emirhan.database.UserTable
-import com.emirhan.plugins.configureOpenApi
-import com.emirhan.plugins.configureRouting
-import com.emirhan.plugins.configureSecurity
-import com.emirhan.plugins.errorHandling
+import com.emirhan.di.diModule
+import com.emirhan.plugins.*
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.install
 import io.ktor.config.HoconApplicationConfig
 import io.ktor.features.ContentNegotiation
-import io.ktor.gson.gson
 import io.ktor.serialization.json
 import io.ktor.server.engine.applicationEngineEnvironment
 import io.ktor.server.engine.connector
@@ -31,12 +28,10 @@ fun main() {
         val dbPassword = config.property("ktor.deployment.db_password").getString()
 
         module {
-            install(ContentNegotiation) {
-                json()
-                gson()
-            }
+            configureSerialization()
             errorHandling()
             configureSecurity()
+            diModule()
             configureRouting()
             configureOpenApi()
 

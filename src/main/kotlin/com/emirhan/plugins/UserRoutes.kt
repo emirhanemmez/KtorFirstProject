@@ -5,7 +5,6 @@ import com.emirhan.model.UserRequest
 import com.emirhan.model.error.AuthenticationException
 import com.emirhan.model.error.UserNotFoundException
 import com.emirhan.utils.TokenManager
-import com.papsign.ktor.openapigen.openAPIGen
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
 import io.ktor.auth.authenticate

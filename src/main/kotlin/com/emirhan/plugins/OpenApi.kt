@@ -43,7 +43,7 @@ fun Application.configureOpenApi() {
                         description = "Return a list of all users"
                     ),
                     status(HttpStatusCode.OK),
-                    example = listOf(User(1, "emirhan", "1234"), User(2, "irem", "1234"))
+                    example = listOf(User(1,"emir", "1234"), User(2,"emirhan", "5678")),
                 ) {
                     respond(userController.getAllUsers())
                 }
