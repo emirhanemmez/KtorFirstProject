@@ -46,4 +46,7 @@ dependencies {
     implementation("com.github.papsign:Ktor-OpenAPI-Generator:0.3-beta.2")
     implementation("io.insert-koin:koin-ktor:3.1.3")
     implementation("io.insert-koin:koin-logger-slf4j:3.1.3")
+
+    implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
+
 }

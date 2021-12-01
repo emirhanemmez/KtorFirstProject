@@ -14,10 +14,10 @@ import io.ktor.features.BadRequestException
 fun Application.configureSecurity() {
     install(Authentication) {
         jwt("auth-jwt") {
-            realm = environment.config.property("jwt.realm").getString()
+            realm = environment.config.property("ktor.security.jwt.realm").getString()
 
-            verifier(JWT.require(Algorithm.HMAC512(environment.config.property("jwt.secret").getString()))
-                    .withIssuer(environment.config.property("jwt.issuer").getString())
+            verifier(JWT.require(Algorithm.HMAC512(environment.config.property("ktor.security.jwt.secret").getString()))
+                    .withIssuer(environment.config.property("ktor.security.jwt.issuer").getString())
                     .build())
 
             validate { credential ->

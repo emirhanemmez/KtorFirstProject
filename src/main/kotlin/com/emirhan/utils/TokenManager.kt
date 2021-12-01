@@ -8,9 +8,9 @@ import java.util.Date
 
 class TokenManager(private val config: HoconApplicationConfig) {
 
-    private val audience = config.property("jwt.audience").getString()
-    private val secret = config.property("jwt.secret").getString()
-    private val issuer = config.property("jwt.issuer").getString()
+    private val audience = config.property("ktor.security.jwt.audience").getString()
+    private val secret = config.property("ktor.security.jwt.secret").getString()
+    private val issuer = config.property("ktor.security.jwt.issuer").getString()
     private val algorithm = Algorithm.HMAC512(secret)
     private val expirationDate = System.currentTimeMillis() + 60000
 
