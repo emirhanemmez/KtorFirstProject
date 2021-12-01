@@ -2,13 +2,10 @@ package com.emirhan.plugins
 
 import com.emirhan.model.error.AuthenticationException
 import com.emirhan.model.error.UserNotFoundException
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.BadRequestException
-import io.ktor.features.StatusPages
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.respond
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.http.*
+import io.ktor.response.*
 
 fun Application.errorHandling() {
     install(StatusPages) {

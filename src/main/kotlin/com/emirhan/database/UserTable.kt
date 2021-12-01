@@ -84,8 +84,8 @@ object UserTable : Table("user") {
     }
 
     private fun ResultRow.toUser() = User(
-            id = this[id],
-            username = this[username],
-            password = this[password]
+        id = this[id],
+        username = this[username],
+        password = this[password]
     )
 }

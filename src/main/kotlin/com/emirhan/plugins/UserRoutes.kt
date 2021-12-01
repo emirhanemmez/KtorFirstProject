@@ -7,23 +7,14 @@ import com.emirhan.model.error.UserNotFoundException
 import com.emirhan.utils.TokenManager
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
-import io.ktor.auth.authenticate
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.auth.principal
-import io.ktor.config.HoconApplicationConfig
-import io.ktor.http.ContentDisposition
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.config.*
+import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.request.receive
-import io.ktor.request.receiveOrNull
+import io.ktor.request.*
 import io.ktor.response.*
-import io.ktor.routing.Route
-import io.ktor.routing.delete
-import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.put
-import io.ktor.routing.route
+import io.ktor.routing.*
 import java.io.File
 
 fun Route.userRouting() {

@@ -3,8 +3,8 @@ package com.emirhan.utils
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.emirhan.model.User
-import io.ktor.config.HoconApplicationConfig
-import java.util.Date
+import io.ktor.config.*
+import java.util.*
 
 class TokenManager(private val config: HoconApplicationConfig) {
 
@@ -15,12 +15,12 @@ class TokenManager(private val config: HoconApplicationConfig) {
     private val expirationDate = System.currentTimeMillis() + 60000
 
     fun generateJWTToken(user: User): String =
-            JWT.create()
-                    .withAudience(audience)
-                    .withIssuer(issuer)
-                    .withClaim("username", user.username)
-                    .withClaim("id", user.id)
-                    .withExpiresAt(Date(expirationDate))
-                    .sign(algorithm)
+        JWT.create()
+            .withAudience(audience)
+            .withIssuer(issuer)
+            .withClaim("username", user.username)
+            .withClaim("id", user.id)
+            .withExpiresAt(Date(expirationDate))
+            .sign(algorithm)
 
 }

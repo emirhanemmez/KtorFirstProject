@@ -3,6 +3,6 @@ package com.emirhan.controller
 import com.emirhan.database.UserTable
 import com.emirhan.model.User
 
-class UserDataSourceImp : UserDataSource{
+class UserDataSourceImp : UserDataSource {
     override suspend fun getAllUsers(): List<User> = UserTable.getAllUsers()
 }

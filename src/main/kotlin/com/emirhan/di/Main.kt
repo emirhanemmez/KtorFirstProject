@@ -1,7 +1,6 @@
 package com.emirhan.di
 
 import com.emirhan.controller.UserController
-import com.emirhan.controller.UserDataSource
 import com.emirhan.controller.UserDataSourceImp
 import io.ktor.application.*
 import org.koin.core.logger.Level

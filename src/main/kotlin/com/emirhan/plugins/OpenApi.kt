@@ -4,9 +4,13 @@ import com.emirhan.controller.UserController
 import com.emirhan.model.User
 import com.papsign.ktor.openapigen.APITag
 import com.papsign.ktor.openapigen.OpenAPIGen
-import com.papsign.ktor.openapigen.route.*
+import com.papsign.ktor.openapigen.route.apiRouting
+import com.papsign.ktor.openapigen.route.info
 import com.papsign.ktor.openapigen.route.path.normal.get
 import com.papsign.ktor.openapigen.route.response.respond
+import com.papsign.ktor.openapigen.route.route
+import com.papsign.ktor.openapigen.route.status
+import com.papsign.ktor.openapigen.route.tag
 import io.ktor.application.*
 import io.ktor.http.*
 import org.koin.ktor.ext.inject
@@ -43,7 +47,7 @@ fun Application.configureOpenApi() {
                         description = "Return a list of all users"
                     ),
                     status(HttpStatusCode.OK),
-                    example = listOf(User(1,"emir", "1234"), User(2,"emirhan", "5678")),
+                    example = listOf(User(1, "emir", "1234"), User(2, "emirhan", "5678")),
                 ) {
                     respond(userController.getAllUsers())
                 }

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Response
 data class User(
-        val id: Int,
-        val username: String,
-        val password: String
+    val id: Int,
+    val username: String,
+    val password: String
 )
