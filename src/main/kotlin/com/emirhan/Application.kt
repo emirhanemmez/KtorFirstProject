@@ -1,22 +1,24 @@
 package com.emirhan
 
-import com.emirhan.database.UserTable
+import com.emirhan.controller.UserController
+import com.emirhan.controller.UserDataSourceImp
 import com.emirhan.di.diModule
 import com.emirhan.plugins.configureOpenApi
 import com.emirhan.plugins.configureRouting
 import com.emirhan.plugins.configureSecurity
 import com.emirhan.plugins.configureSerialization
 import com.emirhan.plugins.errorHandling
+import com.emirhan.plugins.initDatabase
 import com.typesafe.config.ConfigFactory
+import io.ktor.application.*
 import io.ktor.config.*
+import io.ktor.features.*
 import io.ktor.network.tls.certificates.*
+import io.ktor.request.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.StdOutSqlLogger
-import org.jetbrains.exposed.sql.addLogger
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.koin.core.context.startKoin
+import org.slf4j.event.Level
 import java.io.File
 
 fun main() {
@@ -26,11 +28,6 @@ fun main() {
         val serverHost = config.property("ktor.deployment.host").getString()
         val serverPort = config.property("ktor.deployment.port").getString().toInt()
         val serverSSLPort = config.property("ktor.deployment.sslPort").getString().toInt()
-
-        val dbHost = config.property("ktor.deployment.db_host").getString()
-        val dbPort = config.property("ktor.deployment.db_port").getString().toInt()
-        val dbUser = config.property("ktor.deployment.db_user").getString()
-        val dbPassword = config.property("ktor.deployment.db_password").getString()
 
         val keyAlias = config.property("ktor.security.ssl.keyAlias").getString()
         val keyPassword = config.property("ktor.security.ssl.keyPassword").getString()
@@ -44,25 +41,6 @@ fun main() {
             jksPassword = jksPassword
         )
 
-        module {
-            configureSerialization()
-            errorHandling()
-            configureSecurity()
-            diModule()
-            configureRouting()
-            configureOpenApi()
-
-            Database.connect(
-                url = "jdbc:postgresql://$dbHost:$dbPort/postgres",
-                driver = "org.postgresql.Driver",
-                user = dbUser,
-                password = dbPassword
-            )
-            transaction {
-                addLogger(StdOutSqlLogger)
-                SchemaUtils.create(UserTable)
-            }
-        }
         connector {
             port = serverPort
             host = serverHost
@@ -78,5 +56,49 @@ fun main() {
             keyStorePath = keyStoreFile
             host = serverHost
         }
+        module(Application::module)
     }).start(wait = true)
+}
+
+fun Application.module() {
+    configureSerialization()
+    errorHandling()
+    configureSecurity()
+    diModule()
+    configureRouting()
+    configureOpenApi()
+    initDatabase()
+    install(CallLogging) {
+        level = Level.INFO
+        format {
+            val status = it.response.status()
+            val httpMethod = it.request.httpMethod.value
+            val userAgent = it.request.userAgent()
+            "Status: $status, HTTP method: $httpMethod, User Agent: $userAgent"
+        }
+        filter { call -> call.request.path().startsWith("/") }
+    }
+}
+
+fun Application.testModule() {
+    configureSecurity()
+    configureRouting()
+    initDatabase()
+    install(CallLogging) {
+        level = Level.INFO
+        format {
+            val status = it.response.status()
+            val httpMethod = it.request.httpMethod.value
+            "Status: $status, HTTP method: $httpMethod"
+        }
+        filter { call -> call.request.path().startsWith("/") }
+    }
+    startKoin {
+        modules(
+            org.koin.dsl.module(createdAtStart = true) {
+                single { UserDataSourceImp() }
+                single { UserController(get()) }
+            }
+        )
+    }
 }

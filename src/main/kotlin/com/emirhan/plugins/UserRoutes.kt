@@ -15,6 +15,9 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.mindrot.jbcrypt.BCrypt
 import java.io.File
 
 fun Route.userRouting() {
@@ -35,7 +38,7 @@ fun Route.userRouting() {
                 id?.let {
                     val user = UserTable.getUserById(it)
                     if (user != null)
-                        call.respond(user)
+                        call.respond(Json.encodeToString(user))
                     else
                         call.respondText("User not found", status = HttpStatusCode.NotFound)
                 }
@@ -67,6 +70,17 @@ fun Route.userRouting() {
             val username = principal!!.payload.getClaim("username").asString()
             val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
             call.respondText(text = "Hello, $username ! Token is expired at $expiresAt")
+        }
+    }
+
+    route("/signUp") {
+        put {
+            val user = call.receiveOrNull<UserRequest>()
+            user?.let {
+                user.password = user.hashedPassword()
+                UserTable.addUser(user)
+                call.respondText("User saved successfully", status = HttpStatusCode.Created)
+            }
         }
     }
 
@@ -110,12 +124,17 @@ fun Route.userRouting() {
 
     route("/login") {
         post {
+            /*val formParameters = call.receiveParameters()
+            val username = formParameters["username"].toString()
+            val password = formParameters["password"]
+            val user = UserTable.getUserByUsername(username)*/
+
             val userRequest = call.receive<UserRequest>()
             val user = UserTable.getUserByUsername(userRequest.username)
 
             if (user != null) {
-                if (user.password == userRequest.hashedPassword())
-                    call.respond(hashMapOf("token" to tokenManager.generateJWTToken(user)))
+                if (BCrypt.checkpw(userRequest.password, user.password))
+                    call.respond(tokenManager.generateJWTToken(user))
                 else {
                     throw AuthenticationException("Wrong username or password!")
                 }
