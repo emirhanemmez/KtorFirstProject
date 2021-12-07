@@ -83,6 +83,7 @@ fun Application.module() {
 fun Application.testModule() {
     configureSecurity()
     configureRouting()
+    configureSerialization()
     initDatabase()
     install(CallLogging) {
         level = Level.INFO

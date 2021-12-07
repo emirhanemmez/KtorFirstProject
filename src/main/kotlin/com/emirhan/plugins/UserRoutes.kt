@@ -124,11 +124,6 @@ fun Route.userRouting() {
 
     route("/login") {
         post {
-            /*val formParameters = call.receiveParameters()
-            val username = formParameters["username"].toString()
-            val password = formParameters["password"]
-            val user = UserTable.getUserByUsername(username)*/
-
             val userRequest = call.receive<UserRequest>()
             val user = UserTable.getUserByUsername(userRequest.username)
 
