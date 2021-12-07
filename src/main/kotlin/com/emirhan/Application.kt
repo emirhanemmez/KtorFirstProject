@@ -11,6 +11,7 @@ import com.emirhan.plugins.errorHandling
 import com.emirhan.plugins.initDatabase
 import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
+import io.ktor.application.*
 import io.ktor.config.*
 import io.ktor.features.*
 import io.ktor.network.tls.certificates.*
@@ -18,6 +19,9 @@ import io.ktor.request.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.koin.core.context.startKoin
+import org.mpierce.ktor.csrf.CsrfProtection
+import org.mpierce.ktor.csrf.OriginMatchesHostHeader
+import org.mpierce.ktor.csrf.OriginMatchesKnownHost
 import org.slf4j.event.Level
 import java.io.File
 
@@ -77,6 +81,17 @@ fun Application.module() {
             "Status: $status, HTTP method: $httpMethod, User Agent: $userAgent"
         }
         filter { call -> call.request.path().startsWith("/") }
+    }
+
+    // If you are using cookies you should have csrf protection
+    install(CsrfProtection) {
+        applyToAllRoutes()
+
+        val config = HoconApplicationConfig(ConfigFactory.load())
+        val host = config.property("ktor.deployment.host").getString()
+
+        validate(OriginMatchesKnownHost("http", host = host))
+        validate(OriginMatchesKnownHost("https", host = host))
     }
 }
 

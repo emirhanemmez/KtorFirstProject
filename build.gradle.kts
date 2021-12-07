@@ -49,4 +49,6 @@ dependencies {
 
     implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
 
+    implementation("org.mpierce.ktor.csrf:ktor-csrf:0.6.3")
+
 }
