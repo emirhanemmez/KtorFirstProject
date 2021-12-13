@@ -6,7 +6,7 @@ import com.emirhan.model.User
 import io.ktor.config.*
 import java.util.*
 
-class TokenManager(private val config: HoconApplicationConfig) {
+class TokenManager(config: HoconApplicationConfig) {
 
     private val audience = config.property("ktor.security.jwt.audience").getString()
     private val secret = config.property("ktor.security.jwt.secret").getString()

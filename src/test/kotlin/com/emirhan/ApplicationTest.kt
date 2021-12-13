@@ -19,7 +19,7 @@ class ApplicationTest {
             handleRequestWithToken(HttpMethod.Get, "/user/1") {
                 addHeader(HttpHeaders.UserAgent, "EMIRHAN-PC")
             }.apply {
-                assertEquals("EMIRHAN-PC", response.headers[HttpHeaders.UserAgent])
+                assertEquals("EMIRHAN-PC", request.headers[HttpHeaders.UserAgent])
                 assertEquals(HttpStatusCode.OK, response.status())
             }
         }

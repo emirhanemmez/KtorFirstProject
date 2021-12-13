@@ -10,7 +10,7 @@ import org.koin.logger.slf4jLogger
 
 fun Application.diModule() {
     install(Koin) {
-        slf4jLogger(Level.DEBUG)
+        slf4jLogger(Level.ERROR)
         modules(appModule)
     }
 }
